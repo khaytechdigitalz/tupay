@@ -1,5 +1,7 @@
 TUPAY PROJECT README
 DEVELOPED AND DEPLOYED BY OLUWAKAYODE ADETUNJI
+THE DATABSE FILE IS IINCLUDED IN THE ROOT FOLDER WITH NAME: database.sql
+FOR 2FA during Login and Currency Swap, please check log file in storage folder.
 
 ├── app
 │   ├── Helpers      # Utility functions (e.g., User-Agent parsing)

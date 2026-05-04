@@ -3,23 +3,39 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Wallet;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
-class DatabaseSeeder extends Seeder
+class UserWalletSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
     /**
-     * Seed the application's database.
+     * Run the database seeds.
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // 1. Create a Sample User
+        $user = User::updateOrCreate(
+            ['email' => 'tester@tupay.com'], // Prevent duplicates if run twice
+            [
+                'name' => 'Test User',
+                'password' => Hash::make('password123'),
+                'two_factor_secret' => null, // Ready for 2FA testing
+            ]
+        );
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // 2. Create an NGN Wallet with 50,000 balance (stored as 5,000,000 subunits)
+        Wallet::updateOrCreate(
+            ['user_id' => $user->id, 'currency' => 'NGN'],
+            ['balance' => 5000000]
+        );
+
+        // 3. Create a CNY Wallet with 1,000 balance (stored as 100,000 subunits)
+        Wallet::updateOrCreate(
+            ['user_id' => $user->id, 'currency' => 'CNY'],
+            ['balance' => 100000]
+        );
+
+        $this->command->info('Test user and wallets created successfully!');
     }
 }
